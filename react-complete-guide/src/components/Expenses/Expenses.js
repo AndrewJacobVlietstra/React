@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import ExpenseItem from "./ExpenseItem";
 import "./Expenses.css";
 import Card from "../UI/Card";
 import ExpensesFilter from "./ExpensesFilter";
+import { ExpensesList } from "./ExpensesList";
 
 function Expenses(props) {
   // set up state to track currently selected year
@@ -14,23 +14,20 @@ function Expenses(props) {
   };
 
   // filter through the list of expenses before using map to render all the expenses to the screen
-  const filteredExpenses = props.items.filter(expense => expense.date.getFullYear().toString() === selectedYear);
+  const filteredExpenses = props.items.filter(
+    (expense) => expense.date.getFullYear().toString() === selectedYear
+  );
 
   return (
     <Card className="expenses">
       <ExpensesFilter
         defaultYear={selectedYear}
         onSaveSelectValue={saveSelectValueHandler}
-        // onNewValueFilter={}
       />
-      {filteredExpenses.map(expense => (
-        <ExpenseItem
-          key={expense.id}
-          title={expense.title}
-          amount={expense.amount}
-          date={expense.date}
-        />
-      ))}
+      <ExpensesList items={filteredExpenses}/>
+
+      {/* If the first condition on the left is met, then AND will return the expression on the right */}
+      {/* {filteredExpenses.length === 0 && <p>No Expenses Found.</p>} */}
     </Card>
   );
 }
