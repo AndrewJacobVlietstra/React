@@ -13,13 +13,17 @@ function Expenses(props) {
     setSelectedYear(expectedCurrentValue);
   };
 
+  // filter through the list of expenses before using map to render all the expenses to the screen
+  const filteredExpenses = props.items.filter(expense => expense.date.getFullYear().toString() === selectedYear);
+
   return (
     <Card className="expenses">
       <ExpensesFilter
         defaultYear={selectedYear}
         onSaveSelectValue={saveSelectValueHandler}
+        // onNewValueFilter={}
       />
-      {props.items.map((expense) => (
+      {filteredExpenses.map(expense => (
         <ExpenseItem
           key={expense.id}
           title={expense.title}
