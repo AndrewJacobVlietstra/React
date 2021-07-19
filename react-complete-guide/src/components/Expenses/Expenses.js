@@ -6,7 +6,7 @@ import { ExpensesList } from "./ExpensesList";
 
 function Expenses(props) {
   // set up state to track currently selected year
-  const [selectedYear, setSelectedYear] = useState("2020");
+  const [selectedYear, setSelectedYear] = useState("2021");
 
   // use a function to capture the state of the selected year
   const saveSelectValueHandler = (expectedCurrentValue) => {
