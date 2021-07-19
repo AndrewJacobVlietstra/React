@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import "./Expenses.css";
 import Card from "../UI/Card";
 import ExpensesFilter from "./ExpensesFilter";
-import { ExpensesList } from "./ExpensesList";
+import ExpensesList from "./ExpensesList";
+import ExpensesChart from "./ExpensesChart";
 
 function Expenses(props) {
   // set up state to track currently selected year
@@ -24,7 +25,8 @@ function Expenses(props) {
         defaultYear={selectedYear}
         onSaveSelectValue={saveSelectValueHandler}
       />
-      <ExpensesList items={filteredExpenses}/>
+      <ExpensesChart expenses={filteredExpenses} />
+      <ExpensesList items={filteredExpenses} />
 
       {/* If the first condition on the left is met, then AND will return the expression on the right */}
       {/* {filteredExpenses.length === 0 && <p>No Expenses Found.</p>} */}
