@@ -1,0 +1,25 @@
+.formClass {
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f4f4;
+    width: 750px;
+    height: auto;
+    margin: 2rem auto;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.formInput {
+    padding: 5px;
+    margin-top: .4rem;
+    margin-bottom: 1rem;
+}
+
+.formButton {
+    background-color: maroon;
+    color: #fff;
+    width: 100px;
+    border: none;
+    padding: 7px;
+    cursor: pointer;
+}
