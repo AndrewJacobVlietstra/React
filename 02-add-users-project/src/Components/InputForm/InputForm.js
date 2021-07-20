@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import './InputForm.css';
 import Card from '../Card/Card';
+import ErrorModal from '../ErrorModal/ErrorModal';
 
 function InputForm( {onAddUser} ) {
 
+    const [error, setError] = useState();
     const [userName, setUserName] = useState('');
     const [userAge, setUserAge] = useState('');
 
@@ -25,9 +27,15 @@ function InputForm( {onAddUser} ) {
         };
 
         // Guard Clauses
-        if(userName.trim().length === 0 || +userAge.trim().length === 0) return;
-        if (newUser.userAge < 1) return;
-        // if (users.find(user => user.userName === newUser.userName)) return;
+        if(userName.trim().length === 0 || +userAge.trim().length === 0) return setError({
+            title: 'Invalid Input',
+            message: 'Please enter a valid name and age (non-empty values).',
+        });
+
+        if (newUser.userAge < 1) return setError({
+            title: 'Invalid Age',
+            message: 'Please enter a valid age (Age > 0).',
+        });
 
         // Else add the user
         onAddUser(userName, userAge);
@@ -36,6 +44,10 @@ function InputForm( {onAddUser} ) {
         setUserName('');
         setUserAge('');
     }
+
+    const errorHandler = () => {
+        setError(null);
+    };
 
 
     return (
@@ -50,9 +62,8 @@ function InputForm( {onAddUser} ) {
                 </form>
             </Card>
 
-            <Card>
-                
-            </Card>
+            {/* Conditionally render a custom JSX modal element if an error exists */}
+            {error && <ErrorModal onConfirmError={errorHandler} title={error.title} message={error.message} />}
         </>
     )
 }
