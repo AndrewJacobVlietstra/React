@@ -16,3 +16,7 @@
     margin: .3rem;
     font-weight: bold;
 }
+
+.hidden {
+    display: none;
+}
