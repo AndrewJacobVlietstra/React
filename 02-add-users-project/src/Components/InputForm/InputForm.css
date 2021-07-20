@@ -1,12 +1,7 @@
 .formClass {
     display: flex;
     flex-direction: column;
-    background-color: #f4f4f4;
-    width: 750px;
-    height: auto;
-    margin: 2rem auto;
     padding: 20px;
-    border-radius: 10px;
 }
 
 .formInput {
@@ -17,9 +12,18 @@
 
 .formButton {
     background-color: maroon;
+    border: 1px solid transparent;
     color: #fff;
     width: 100px;
-    border: none;
     padding: 7px;
     cursor: pointer;
+    transition: all .25s;
+}
+
+.formButton:hover {background-color: rgb(172, 1, 1);}
+
+.formButton:active {
+    background-color: rgba(172, 1, 1, 0);
+    color: black;
+    border: 1px solid black;
 }

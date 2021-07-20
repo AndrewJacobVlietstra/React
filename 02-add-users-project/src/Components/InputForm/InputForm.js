@@ -1,13 +1,8 @@
 import React, { useState } from 'react'
 import './InputForm.css';
-import '../UserList/UserList.css';
+import Card from '../Card/Card';
 
-function InputForm() {
-
-    const [users, setUsers] = useState([
-        // {userName: 'Andrew', userAge: 25},
-        // {userName: 'Evan', userAge: 22},
-    ]);
+function InputForm( {onAddUser} ) {
 
     const [userName, setUserName] = useState('');
     const [userAge, setUserAge] = useState('');
@@ -29,41 +24,35 @@ function InputForm() {
             userAge: userAge,
         };
 
-        // Guard Clause, if new user matches an existing user or age is less than or equal to 0, return
-        if (users.find(user => user.userName === newUser.userName)) return;
-        if (newUser.userAge <= 0) return;
+        // Guard Clauses
+        if(userName.trim().length === 0 || +userAge.trim().length === 0) return;
+        if (newUser.userAge < 1) return;
+        // if (users.find(user => user.userName === newUser.userName)) return;
 
         // Else add the user
-        setUsers([
-            ...users,
-            newUser,
-        ]);
+        onAddUser(userName, userAge);
 
-        // Clear fields
+        // Clear fields, have to also pass current value back into input fields
         setUserName('');
         setUserAge('');
     }
 
 
-    const mappedUsers = users.map((user) => {
-        return <li key={user.userName} className='userListItem'>{user.userName} ({user.userAge} years old)</li>;
-    });
-
     return (
         <>
-            <div>
-                <form className='formClass'>
-                    <label>Username</label>
-                    <input className='formInput' type='text' placeholder='Your username...' onChange={userNameOnChangeHandler}></input>
-                    <label>Age (Years)</label>
-                    <input className='formInput' type='number' placeholder='Your age...' onChange={userAgeOnChangeHandler}></input>
-                    <button className='formButton' type='submit' onClick={formSubmitHandler}>Add User</button>
+            <Card>
+                <form className='formClass' onSubmit={formSubmitHandler}>
+                    <label htmlFor='userName'>Username</label>
+                    <input id='userName' className='formInput' value={userName} type='text' placeholder='Your username...' onChange={userNameOnChangeHandler}></input>
+                    <label htmlFor='userAge'>Age (Years)</label>
+                    <input id='userAge' className='formInput' value={userAge} type='number' placeholder='Your age...' onChange={userAgeOnChangeHandler}></input>
+                    <button className='formButton' type='submit'>Add User</button>
                 </form>
-            </div>
+            </Card>
 
-            <ul className={`userList ${users.length === 0 ? 'hidden' : ''}`}>
-                {mappedUsers}
-            </ul>
+            <Card>
+                
+            </Card>
         </>
     )
 }

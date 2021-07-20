@@ -1,13 +1,9 @@
 .userList {
+    transition: all .3s;
     display: flex;
     flex-direction: column;
-    background-color: #f4f4f4;
-    width: 750px;
-    height: auto;
-    margin: 2rem auto;
-    padding: 20px;
-    border-radius: 10px;
     list-style: none;
+    padding: 20px;
 }
 
 .userListItem {
