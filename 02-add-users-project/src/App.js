@@ -5,9 +5,10 @@ import UserList from "./Components/UserList/UserList";
 function App() {
 
   const [users, setUsers] = useState([
-    // { userName: "Andrew", userAge: 25 },
-    // { userName: "Evan", userAge: 22 },
-    // { userName: "Miranda", userAge: 25 },
+    { userName: "Andrew", userAge: 25, userID: Math.random().toString()},
+    { userName: "Evan", userAge: 22, userID: Math.random().toString() },
+    { userName: "Miranda", userAge: 25, userID: Math.random().toString() },
+    { userName: "Val", userAge: 24, userID: Math.random().toString() },
   ]);
 
   const addUserHandler = (uName, uAge) => {
@@ -21,7 +22,7 @@ function App() {
   return (
     <>
       <InputForm users={users} onAddUser={addUserHandler}/>
-      <UserList users={users}/>
+      <UserList users={users} onDeleteUser={setUsers}/>
     </>
   );
 }

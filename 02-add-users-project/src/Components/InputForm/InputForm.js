@@ -8,6 +8,7 @@ function InputForm( {onAddUser} ) {
     const [error, setError] = useState();
     const [userName, setUserName] = useState('');
     const [userAge, setUserAge] = useState('');
+    const [someText, setSomeText] = useState('');
 
     const userNameOnChangeHandler = (event) => {
         setUserName(event.target.value);
@@ -15,6 +16,10 @@ function InputForm( {onAddUser} ) {
 
     const userAgeOnChangeHandler = (event) => {
         setUserAge(event.target.value);
+    };
+
+    const someTextOnChangeHandler = (event) => {
+        setSomeText(event.target.value);
     };
 
     const formSubmitHandler = (event) => {
@@ -58,6 +63,8 @@ function InputForm( {onAddUser} ) {
                     <input id='userName' className='formInput' value={userName} type='text' placeholder='Your username...' onChange={userNameOnChangeHandler}></input>
                     <label htmlFor='userAge'>Age (Years)</label>
                     <input id='userAge' className='formInput' value={userAge} type='number' placeholder='Your age...' onChange={userAgeOnChangeHandler}></input>
+                    <label htmlFor='showInput'>{someText}</label>
+                    <input id='showInput' className='formInput' value={someText} type='text' placeholder='Type something...' onChange={someTextOnChangeHandler}></input>
                     <button className='formButton' type='submit'>Add User</button>
                 </form>
             </Card>
