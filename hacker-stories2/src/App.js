@@ -22,6 +22,13 @@ const list = [
     point: 2,
     id: 3,
   },
+  {
+    title: "React is Totally Rad!",
+    url: "https://www.facebook.com/",
+    author: "Jenna",
+    point: 21,
+    id: 4,
+  },
 ];
 
 // function getSomething(something) {
