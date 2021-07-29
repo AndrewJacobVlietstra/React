@@ -1,35 +1,5 @@
+import { useState } from 'react';
 import "./App.css";
-
-const list = [
-  {
-    title: "React Rocks!",
-    author: "John",
-    url: "https://www.google.com/",
-    points: 5,
-    id: 0,
-  },
-  {
-    title: "React is Cool!",
-    url: "https://www.youtube.com/",
-    author: "Frank",
-    point: 8,
-    id: 2,
-  },
-  {
-    title: "React is Awesome!",
-    url: "https://www.facebook.com/",
-    author: "Steve",
-    point: 2,
-    id: 3,
-  },
-  {
-    title: "React is Totally Rad!",
-    url: "https://www.facebook.com/",
-    author: "Jenna",
-    point: 21,
-    id: 4,
-  },
-];
 
 // function getSomething(something) {
 //   return something;
@@ -46,31 +16,109 @@ const list = [
 //   return newArr;
 // }
 
+class Developer {
+
+  constructor(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName
+  }
+
+  getname() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+
+};
+
+const andrew = new Developer('Andrew', 'Vlietstra');
+console.log(andrew);
+console.log(andrew.getname());
+
 function App() {
+  // console.log('App Renders');
+  const [userSearch, setUserSearch] = useState('');
+
+  const handleSearch = (e) => {
+    setUserSearch(e.target.value);
+  };
+
+
+  const stories = [
+    {
+      title: "React Rocks!",
+      author: "John",
+      url: "https://www.google.com/",
+      points: 5,
+      id: 0,
+    },
+    {
+      title: "JavaScript is Cool!",
+      url: "https://www.youtube.com/",
+      author: "Frank",
+      point: 8,
+      id: 2,
+    },
+    {
+      title: "HTML is Totally Rad!",
+      url: "https://www.facebook.com/",
+      author: "Jenna",
+      point: 21,
+      id: 3,
+    },
+  ];
+
+  const filteredStories = stories.filter((story) => {
+    return story.title.toLowerCase().includes(userSearch.toLowerCase());
+  });
+
+  const title = 'My Hacker Stories';
   return (
     <div className="App">
-      <h1>My Hacker Stories</h1>
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" />
-
+      <h1>{title}</h1>
+      <Search onSearch={handleSearch} searchValue={userSearch} />
       <hr />
-      <List />
+      <List list={filteredStories} />
     </div>
   );
 };
 
-function List() {
+// These component functions are similar to classes in a sense
+// as they can instantiate as many JSX elements as you want but 
+// react components are technically not classes
+function List(props) {
+  // console.log('List Renders');
   return (
     <ul>
-      {list.map((item) => (
-        <li key={item.id}>
-          <span>{item.title} </span>
-          <span>
-            <a href={item.url}>{item.author}</a>
-          </span>
-        </li>
-      ))}
+      {props.list.map(item => <Item key={item.id} itemData={item} />)}
     </ul>
+  );
+};
+
+function Item(props) {
+  // console.log('Item Renders');
+  return (
+    <li>
+      <span>{props.itemData.title} </span>
+      <span>
+        <a target="_blank" rel="noreferrer" href={props.itemData.url}>{props.itemData.author}</a>
+      </span>
+    </li>
+  );
+};
+
+function Search(props) {
+  // console.log('Search Renders');
+
+  const handleChange = (e) => {
+    props.onSearch(e);
+  };
+
+
+  return (
+    <>
+      <p>Searching for '<strong>{props.searchValue}</strong>';</p>
+      <label htmlFor="search">Search: </label>
+      <input id="search" type="text" onChange={handleChange} /> <br />
+    </>
   );
 };
 
