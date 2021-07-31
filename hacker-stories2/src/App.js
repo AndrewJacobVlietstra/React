@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "./App.css";
 
 // function getSomething(something) {
@@ -35,7 +35,11 @@ console.log(andrew.getname());
 
 function App() {
   // console.log('App Renders');
-  const [userSearch, setUserSearch] = useState('');
+  const [userSearch, setUserSearch] = useState(localStorage.getItem('search') || '');
+
+  useEffect(() => {
+    localStorage.setItem('search', userSearch);
+  }, [userSearch])
 
   const handleSearch = (e) => {
     setUserSearch(e.target.value);
@@ -84,40 +88,35 @@ function App() {
 // These component functions are similar to classes in a sense
 // as they can instantiate as many JSX elements as you want but 
 // react components are technically not classes
-function List(props) {
+function List({list}) {
   // console.log('List Renders');
   return (
     <ul>
-      {props.list.map(item => <Item key={item.id} itemData={item} />)}
+      {list.map(item => <Item key={item.id} {...item} />)}
     </ul>
   );
 };
 
-function Item(props) {
+function Item({title, url, author}) {
   // console.log('Item Renders');
   return (
     <li>
-      <span>{props.itemData.title} </span>
+      <span>{title} </span>
       <span>
-        <a target="_blank" rel="noreferrer" href={props.itemData.url}>{props.itemData.author}</a>
+        <a target="_blank" rel="noreferrer" href={url}>{author}</a>
       </span>
     </li>
   );
 };
 
-function Search(props) {
+function Search({onSearch, searchValue}) {
   // console.log('Search Renders');
-
-  const handleChange = (e) => {
-    props.onSearch(e);
-  };
-
 
   return (
     <>
-      <p>Searching for '<strong>{props.searchValue}</strong>';</p>
+      <p>Searching for '<strong>{searchValue}</strong>';</p>
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleChange} /> <br />
+      <input id="search" type="text" value={searchValue} onChange={onSearch} /> <br />
     </>
   );
 };
