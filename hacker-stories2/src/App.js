@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import "./App.css";
+import useLocalStorage from './useLocalStorage';
 
 // function getSomething(something) {
 //   return something;
@@ -35,7 +36,8 @@ console.log(andrew.getname());
 
 function App() {
   // console.log('App Renders');
-  const [userSearch, setUserSearch] = useState(localStorage.getItem('search') || '');
+  // Implemented my custom hook useLocalStorage here
+  const [userSearch, setUserSearch] = useLocalStorage('search', 'React');
 
   useEffect(() => {
     localStorage.setItem('search', userSearch);
