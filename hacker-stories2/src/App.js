@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import "./App.css";
 import useLocalStorage from "./useLocalStorage";
-import logo from './images/logo192.png';
+import logo from "./images/logo192.png";
 
 // function getSomething(something) {
 //   return something;
@@ -32,6 +32,19 @@ class Developer {
 const andrew = new Developer("Andrew", "Vlietstra");
 console.log(andrew);
 console.log(andrew.getname());
+
+const ACTIONS = {setStories: 'SET_STORIES', removeStory: 'REMOVE_STORY'};
+
+const storiesReducer = (state, action) => {
+  switch (action.type) {
+    case ACTIONS.setStories:
+      return action.payload;
+    case ACTIONS.removeStory:
+      return state.filter((story) => story.id !== action.payload.id);
+    default:
+      throw new Error("Invalid Action Type...");
+  }
+};
 
 function App() {
   // console.log('App Renders');
@@ -77,7 +90,7 @@ function App() {
     },
   ];
 
-  const [stories, setStories] = useState([]);
+  const [stories, dispatchStories] = useReducer(storiesReducer, []);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -90,16 +103,15 @@ function App() {
   useEffect(() => {
     setIsLoading(true);
     getAsyncStories()
-    .then((result) => {
-      setStories(result.data.stories);
-      setIsLoading(false);
-    })
-    .catch(() => setIsError(true));
+      .then((result) => {
+        dispatchStories({ type: ACTIONS.setStories, payload: result.data.stories });
+        setIsLoading(false);
+      })
+      .catch(() => setIsError(true));
   }, []);
 
   const handleRemoveStory = (item) => {
-    const newStories = stories.filter((story) => story.id !== item.id);
-    setStories(newStories);
+    dispatchStories({ type: ACTIONS.removeStory, payload: item });
   };
 
   const filteredStories = stories.filter((story) => {
@@ -122,11 +134,12 @@ function App() {
       <hr />
       {isError && <p>Something went wrong... Try reloading the page!</p>}
       {isLoading ? (
-        <p>Loading Stories... <img className='react-logo' src={logo} /></p>
+        <p>
+          Loading Stories... <img className="react-logo" src={logo} />
+        </p>
       ) : (
         <List list={filteredStories} onRemoveItem={handleRemoveStory} />
       )}
-      {/* <img className='react-logo' src={logo} alt="React" /> */}
     </div>
   );
 }
