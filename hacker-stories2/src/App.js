@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./App.css";
 import useLocalStorage from "./useLocalStorage";
 
@@ -44,7 +45,7 @@ function App() {
     setUserSearch(e.target.value);
   };
 
-  const stories = [
+  const initialStories = [
     {
       title: "React Rocks!",
       author: "John",
@@ -56,17 +57,31 @@ function App() {
       title: "JavaScript is Cool!",
       url: "https://www.youtube.com/",
       author: "Frank",
-      point: 8,
-      id: 2,
+      points: 8,
+      id: 1,
     },
     {
       title: "HTML is Totally Rad!",
       url: "https://www.facebook.com/",
       author: "Jenna",
-      point: 21,
+      points: 21,
+      id: 2,
+    },
+    {
+      title: "React is like HTML + JavaScript",
+      url: "https://www.facebook.com/",
+      author: "Derrick",
+      points: 9,
       id: 3,
     },
   ];
+
+  const [stories, setStories] = useState(initialStories);
+
+  const handleRemoveStory = (item) => {
+    const newStories = stories.filter(story => story.id !== item.id);
+    setStories(newStories);
+  };
 
   const filteredStories = stories.filter((story) => {
     return story.title.toLowerCase().includes(userSearch.toLowerCase());
@@ -86,7 +101,7 @@ function App() {
         Search:
       </ InputWithLabel>
       <hr />
-      <List list={filteredStories} />
+      <List list={filteredStories} onRemoveItem={handleRemoveStory} />
     </div>
   );
 }
@@ -94,27 +109,31 @@ function App() {
 // These component functions are similar to classes in a sense
 // as they can instantiate as many JSX elements as you want but
 // react components are technically not classes
-function List({ list }) {
+function List({ list, onRemoveItem }) {
   // console.log('List Renders');
   return (
     <ul>
       {list.map((item) => (
-        <Item key={item.id} {...item} />
+        <Item key={item.id} {...item} item={item} onRemoveItem={onRemoveItem} />
       ))}
     </ul>
   );
 }
 
-function Item({ title, url, author }) {
+function Item({ item, title, url, author, onRemoveItem }) {
   // console.log('Item Renders');
+
   return (
     <li>
-      <span>{title} </span>
       <span>
-        <a target="_blank" rel="noreferrer" href={url}>
-          {author}
-        </a>
+        <span>{title} </span>
+        <span>
+          <a target="_blank" rel="noreferrer" href={url}>
+            {author}
+          </a>
+        </span>
       </span>
+      <button type='button' onClick={() => onRemoveItem(item)}>Dismiss</button>
     </li>
   );
 }
