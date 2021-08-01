@@ -33,14 +33,24 @@ const andrew = new Developer("Andrew", "Vlietstra");
 console.log(andrew);
 console.log(andrew.getname());
 
-const ACTIONS = {setStories: 'SET_STORIES', removeStory: 'REMOVE_STORY'};
+const defaultState = [];
+
+const ACTIONS = {
+  setStories: "SET_STORIES",
+  removeStory: "REMOVE_STORY",
+  clearAll: "CLEAR_ALL_STORIES",
+};
 
 const storiesReducer = (state, action) => {
   switch (action.type) {
     case ACTIONS.setStories:
       return action.payload;
     case ACTIONS.removeStory:
-      return state.filter((story) => story.id !== action.payload.id);
+      return state.filter(
+        (story) => story.objectID !== action.payload.objectID
+      );
+    case ACTIONS.clearAll:
+      return defaultState;
     default:
       throw new Error("Invalid Action Type...");
   }
@@ -93,22 +103,39 @@ function App() {
   const [stories, dispatchStories] = useReducer(storiesReducer, []);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const API_ENDPOINT = "https://hn.algolia.com/api/v1/search?query=";
 
   // Simulating loading these stories asyncly from an API
-  const getAsyncStories = () =>
-    new Promise((resolve, reject) =>
-      setTimeout(() => resolve({ data: { stories: initialStories } }), 2500)
-    );
+  // const getAsyncStories = () =>
+  // new Promise((resolve, reject) =>
+  //   setTimeout(() => resolve({ data: { stories: initialStories } }), 2500)
+  // );
 
   useEffect(() => {
+    if (!userSearch) return;
+
     setIsLoading(true);
-    getAsyncStories()
-      .then((result) => {
-        dispatchStories({ type: ACTIONS.setStories, payload: result.data.stories });
-        setIsLoading(false);
+
+    // Fetch some data from a remote API
+    fetch(`${API_ENDPOINT}${userSearch}`)
+      .then((response) => response.json())
+      .then((data) => {
+        dispatchStories({ type: ACTIONS.setStories, payload: data.hits });
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
       })
-      .catch(() => setIsError(true));
-  }, []);
+      .catch((err) => console.error(err.message));
+    // getAsyncStories()
+    //   .then((result) => {
+    //     dispatchStories({
+    //       type: ACTIONS.setStories,
+    //       payload: result.data.stories,
+    //     });
+    //     setIsLoading(false);
+    //   })
+    //   .catch(() => setIsError(true));
+  }, [userSearch]);
 
   const handleRemoveStory = (item) => {
     dispatchStories({ type: ACTIONS.removeStory, payload: item });
@@ -131,6 +158,15 @@ function App() {
       >
         Search:
       </InputWithLabel>
+      <button
+        className="clearAllBtn"
+        onClick={() => {
+          setUserSearch("");
+          dispatchStories({ type: ACTIONS.clearAll });
+        }}
+      >
+        Clear All
+      </button>
       <hr />
       {isError && <p>Something went wrong... Try reloading the page!</p>}
       {isLoading ? (
@@ -138,7 +174,12 @@ function App() {
           Loading Stories... <img className="react-logo" src={logo} />
         </p>
       ) : (
-        <List list={filteredStories} onRemoveItem={handleRemoveStory} />
+        <List list={stories} onRemoveItem={handleRemoveStory} />
+      )}
+      {stories.length === 0 ? (
+        <p>Try searching for some stories...</p>
+      ) : (
+        <List list={stories} onRemoveItem={handleRemoveStory} />
       )}
     </div>
   );
@@ -152,7 +193,12 @@ function List({ list, onRemoveItem }) {
   return (
     <ul>
       {list.map((item) => (
-        <Item key={item.id} {...item} item={item} onRemoveItem={onRemoveItem} />
+        <Item
+          key={item.objectID}
+          {...item}
+          item={item}
+          onRemoveItem={onRemoveItem}
+        />
       ))}
     </ul>
   );
