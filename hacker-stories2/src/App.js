@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import useLocalStorage from "./useLocalStorage";
+import logo from './images/logo192.png';
 
 // function getSomething(something) {
 //   return something;
@@ -76,10 +77,28 @@ function App() {
     },
   ];
 
-  const [stories, setStories] = useState(initialStories);
+  const [stories, setStories] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  // Simulating loading these stories asyncly from an API
+  const getAsyncStories = () =>
+    new Promise((resolve, reject) =>
+      setTimeout(() => resolve({ data: { stories: initialStories } }), 2500)
+    );
+
+  useEffect(() => {
+    setIsLoading(true);
+    getAsyncStories()
+    .then((result) => {
+      setStories(result.data.stories);
+      setIsLoading(false);
+    })
+    .catch(() => setIsError(true));
+  }, []);
 
   const handleRemoveStory = (item) => {
-    const newStories = stories.filter(story => story.id !== item.id);
+    const newStories = stories.filter((story) => story.id !== item.id);
     setStories(newStories);
   };
 
@@ -99,9 +118,15 @@ function App() {
         onInputChange={handleSearch}
       >
         Search:
-      </ InputWithLabel>
+      </InputWithLabel>
       <hr />
-      <List list={filteredStories} onRemoveItem={handleRemoveStory} />
+      {isError && <p>Something went wrong... Try reloading the page!</p>}
+      {isLoading ? (
+        <p>Loading Stories... <img className='react-logo' src={logo} /></p>
+      ) : (
+        <List list={filteredStories} onRemoveItem={handleRemoveStory} />
+      )}
+      {/* <img className='react-logo' src={logo} alt="React" /> */}
     </div>
   );
 }
@@ -133,7 +158,9 @@ function Item({ item, title, url, author, onRemoveItem }) {
           </a>
         </span>
       </span>
-      <button type='button' onClick={() => onRemoveItem(item)}>Dismiss</button>
+      <button type="button" onClick={() => onRemoveItem(item)}>
+        Dismiss
+      </button>
     </li>
   );
 }
