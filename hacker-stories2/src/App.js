@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
 import "./App.css";
-import useLocalStorage from './useLocalStorage';
+import useLocalStorage from "./useLocalStorage";
 
 // function getSomething(something) {
 //   return something;
@@ -18,35 +17,32 @@ import useLocalStorage from './useLocalStorage';
 // }
 
 class Developer {
-
   constructor(firstName, lastName) {
     this.firstName = firstName;
-    this.lastName = lastName
+    this.lastName = lastName;
   }
 
   getname() {
     return `${this.firstName} ${this.lastName}`;
   }
+}
 
-};
-
-const andrew = new Developer('Andrew', 'Vlietstra');
+const andrew = new Developer("Andrew", "Vlietstra");
 console.log(andrew);
 console.log(andrew.getname());
 
 function App() {
   // console.log('App Renders');
   // Implemented my custom hook useLocalStorage here
-  const [userSearch, setUserSearch] = useLocalStorage('search', 'React');
+  const [userSearch, setUserSearch] = useLocalStorage("search", "");
 
-  useEffect(() => {
-    localStorage.setItem('search', userSearch);
-  }, [userSearch])
+  // useEffect(() => {
+  //   localStorage.setItem('search', userSearch);
+  // }, [userSearch])
 
   const handleSearch = (e) => {
     setUserSearch(e.target.value);
   };
-
 
   const stories = [
     {
@@ -76,51 +72,81 @@ function App() {
     return story.title.toLowerCase().includes(userSearch.toLowerCase());
   });
 
-  const title = 'My Hacker Stories';
+  const title = "My Hacker Stories";
   return (
     <div className="App">
       <h1>{title}</h1>
-      <Search onSearch={handleSearch} searchValue={userSearch} />
+      {/* <Search onSearch={handleSearch} searchValue={userSearch} /> */}
+      <InputWithLabel
+        id="search"
+        type="text"
+        value={userSearch}
+        onInputChange={handleSearch}
+      >
+        Search:
+      </ InputWithLabel>
       <hr />
       <List list={filteredStories} />
     </div>
   );
-};
+}
 
 // These component functions are similar to classes in a sense
-// as they can instantiate as many JSX elements as you want but 
+// as they can instantiate as many JSX elements as you want but
 // react components are technically not classes
-function List({list}) {
+function List({ list }) {
   // console.log('List Renders');
   return (
     <ul>
-      {list.map(item => <Item key={item.id} {...item} />)}
+      {list.map((item) => (
+        <Item key={item.id} {...item} />
+      ))}
     </ul>
   );
-};
+}
 
-function Item({title, url, author}) {
+function Item({ title, url, author }) {
   // console.log('Item Renders');
   return (
     <li>
       <span>{title} </span>
       <span>
-        <a target="_blank" rel="noreferrer" href={url}>{author}</a>
+        <a target="_blank" rel="noreferrer" href={url}>
+          {author}
+        </a>
       </span>
     </li>
   );
-};
+}
 
-function Search({onSearch, searchValue}) {
+function Search({ onSearch, searchValue }) {
   // console.log('Search Renders');
 
   return (
     <>
-      <p>Searching for '<strong>{searchValue}</strong>';</p>
+      <p>
+        Searching for '<strong>{searchValue}</strong>';
+      </p>
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" value={searchValue} onChange={onSearch} /> <br />
+      <input
+        id="search"
+        type="text"
+        value={searchValue}
+        onChange={onSearch}
+      />{" "}
+      <br />
     </>
   );
-};
+}
+
+// Re-usable generalized component, has label and input field
+function InputWithLabel({ id, label, value, type, onInputChange, children }) {
+  return (
+    <>
+      <label htmlFor={id}>{children} </label>
+      <input type={type} id={id} value={value} onChange={onInputChange} />
+    </>
+  );
+}
 
 export default App;
