@@ -32,8 +32,12 @@
   cursor: pointer;
 }
 
-.App .clearAllBtn {
+.App .submitBtn {
   margin-left: 1rem;
+}
+
+.App .clearAllBtn {
+  margin-left: .2rem;
 }
 
 .react-logo {

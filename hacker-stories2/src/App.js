@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useState, useCallback } from "react";
 import "./App.css";
 import useLocalStorage from "./useLocalStorage";
 import logo from "./images/logo192.png";
@@ -104,6 +104,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const API_ENDPOINT = "https://hn.algolia.com/api/v1/search?query=";
+  const [url, setURL] = useState(`${API_ENDPOINT}${userSearch}`);
 
   // Simulating loading these stories asyncly from an API
   // const getAsyncStories = () =>
@@ -111,13 +112,22 @@ function App() {
   //   setTimeout(() => resolve({ data: { stories: initialStories } }), 2500)
   // );
 
-  useEffect(() => {
+  const handleSearchSubmit = () => {
+    setURL(`${API_ENDPOINT}${userSearch}`);
+  };
+
+  const handleSearchSubmitEnterKey = (e) => {
     if (!userSearch) return;
+    if(e.key === 'Enter') handleSearchSubmit();
+  };
+
+  const handleFetchStories = useCallback(() => {
+    if (!userSearch) return dispatchStories({ type: ACTIONS.clearAll });
 
     setIsLoading(true);
 
     // Fetch some data from a remote API
-    fetch(`${API_ENDPOINT}${userSearch}`)
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         dispatchStories({ type: ACTIONS.setStories, payload: data.hits });
@@ -135,15 +145,20 @@ function App() {
     //     setIsLoading(false);
     //   })
     //   .catch(() => setIsError(true));
-  }, [userSearch]);
+  }, [url]);
+
+  useEffect(() => {
+    handleFetchStories();
+  }, [handleFetchStories]);
 
   const handleRemoveStory = (item) => {
     dispatchStories({ type: ACTIONS.removeStory, payload: item });
   };
 
-  const filteredStories = stories.filter((story) => {
-    return story.title.toLowerCase().includes(userSearch.toLowerCase());
-  });
+  // Filter client-side list functionality
+  // const filteredStories = stories.filter((story) => {
+  //   return story.title.toLowerCase().includes(userSearch.toLowerCase());
+  // });
 
   const title = "My Hacker Stories";
   return (
@@ -155,9 +170,18 @@ function App() {
         type="text"
         value={userSearch}
         onInputChange={handleSearch}
+        onEnterKey={handleSearchSubmitEnterKey}
       >
         Search:
       </InputWithLabel>
+      <button
+        type="button"
+        disabled={!userSearch}
+        className="submitBtn"
+        onClick={handleSearchSubmit}
+      >
+        Submit
+      </button>
       <button
         className="clearAllBtn"
         onClick={() => {
@@ -245,11 +269,11 @@ function Search({ onSearch, searchValue }) {
 }
 
 // Re-usable generalized component, has label and input field
-function InputWithLabel({ id, label, value, type, onInputChange, children }) {
+function InputWithLabel({ id, label, value, type, onInputChange, children, onEnterKey }) {
   return (
     <>
       <label htmlFor={id}>{children} </label>
-      <input type={type} id={id} value={value} onChange={onInputChange} />
+      <input type={type} id={id} value={value} onChange={onInputChange} onKeyUp={onEnterKey} />
     </>
   );
 }
