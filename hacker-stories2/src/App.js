@@ -298,7 +298,7 @@ function CurrentDate() {
   }, 1000);
 
   return (
-    <h5>{`Current Date: ${curMonth}/${curDay}-${curDayNum}/${curYear} ${time}`}</h5>
+    <h5>{`Current Date: ${curDay}-${curDayNum}/${curMonth}/${curYear} ${time}`}</h5>
   );
 };
 
