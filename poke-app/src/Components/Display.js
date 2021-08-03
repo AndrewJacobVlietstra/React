@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function Display({pokeData, userSearch, types, weight, height, pokeID}) {
+function Display({pokeData, types, weight, height, pokeID, normalURL, shinyURL}) {
 
   String.prototype.capitalCase = function() {
     if (!this) return;
@@ -8,8 +8,6 @@ function Display({pokeData, userSearch, types, weight, height, pokeID}) {
   }
 
   const [isShiny, setIsShiny] = useState(false);
-  const [shinyURL, setShinyURL] = useState(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${pokeData.id}.png`);
-  const [normalURL, setNormalURL] = useState(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeData.id}.png`);
 
   let currentPokeName = pokeData.name;
   return (

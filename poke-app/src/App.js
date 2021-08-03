@@ -15,6 +15,8 @@ function App() {
   const [currentPokeWeight, setCurrentPokeWeight] = useState('');
   const [currentPokeHeight, setCurrentPokeHeight] = useState('');
   const [currentPokeID, setCurrentPokeID] = useState('');
+  const [shinyURL, setShinyURL] = useState('');
+  const [normalURL, setNormalURL] = useState('');
 
 
   useEffect(() => {
@@ -32,6 +34,8 @@ function App() {
         setCurrentPokeWeight(`${data.weight / 10} kg`);
         setCurrentPokeHeight(`${data.height / 10} m`);
         setCurrentPokeID(`${data.id}`);
+        setShinyURL(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${data.id}.png`);
+        setNormalURL(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`);
         setIsError(false);
       } catch (err) {
         console.error(err.message);
@@ -60,6 +64,8 @@ function App() {
         weight={currentPokeWeight}
         height={currentPokeHeight}
         pokeID={currentPokeID}
+        normalURL={normalURL}
+        shinyURL={shinyURL}
       />
       {isLoading ? (
         <p>
