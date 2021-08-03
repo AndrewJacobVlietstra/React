@@ -14,7 +14,7 @@ function App() {
   const [currentPokeTypes, setCurrentPokeTypes] = useState('');
   const [currentPokeWeight, setCurrentPokeWeight] = useState('');
   const [currentPokeHeight, setCurrentPokeHeight] = useState('');
-  const [currentPokeID, setCurrentPokeID] = useState('');
+  const [currentPokeID, setCurrentPokeID] = useState(null);
   const [shinyURL, setShinyURL] = useState('');
   const [normalURL, setNormalURL] = useState('');
 
@@ -49,6 +49,14 @@ function App() {
     getPokeData(currentURL);
   }, [currentURL]);
 
+  function handlePrev() {
+    setCurrentURL(`https://pokeapi.co/api/v2/pokemon/${Number(currentPokeID) - 1}`);
+  };
+
+  function handleNext() {
+    setCurrentURL(`https://pokeapi.co/api/v2/pokemon/${Number(currentPokeID) + 1}`);
+  };
+
   return (
     <div className="App">
       <UserSearch
@@ -66,6 +74,8 @@ function App() {
         pokeID={currentPokeID}
         normalURL={normalURL}
         shinyURL={shinyURL}
+        handlePrev={handlePrev}
+        handleNext={handleNext}
       />
       {isLoading ? (
         <p>

@@ -95,6 +95,30 @@ body a {
   color: skyblue;
 }
 
+.prevNextButtons {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.prevNextButtons button {
+  font-size: 16px;
+  padding: 0px 6px;
+  padding-bottom: 2px;
+  border-radius: 6px;
+  border: none;
+  background-color: steelblue;
+  color: #fff;
+  cursor: pointer;
+  transition: all .25s;
+}
+
+.prevNextButtons button:hover {
+  background-color: goldenrod;
+}
+.prevNextButtons button:active {
+  color: black;
+}
+
 @keyframes pokeBall {
   0% {
     transform: rotate(0deg);
