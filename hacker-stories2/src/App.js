@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState, useCallback } from "react";
+import { useEffect, useReducer, useState, useCallback} from "react";
 import "./App.css";
 import useLocalStorage from "./useLocalStorage";
 import logo from "./images/logo192.png";
@@ -32,6 +32,7 @@ class Developer {
 const andrew = new Developer("Andrew", "Vlietstra");
 console.log(andrew);
 console.log(andrew.getname());
+
 
 const defaultState = [];
 
@@ -163,7 +164,8 @@ function App() {
   const title = "My Hacker Stories";
   return (
     <div className="App">
-      <h1>{title}</h1>
+      <h1 id='mainTitle'>{title}</h1>
+      <CurrentDate />
       {/* <Search onSearch={handleSearch} searchValue={userSearch} /> */}
       <InputWithLabel
         id="search"
@@ -277,5 +279,27 @@ function InputWithLabel({ id, label, value, type, onInputChange, children, onEnt
     </>
   );
 }
+
+function CurrentDate() {
+
+  let dateNow = new Date().toString();
+  let [curDay, curMonth, curDayNum, curYear, curTime] = dateNow.split(' ');
+
+  // const [day, setDay] = useState(curDay);
+  // const [month, setMonth] = useState(curMonth);
+  // const [dayNum, setDayNum] = useState(curDayNum);
+  // const [year, setYear] = useState(curYear);
+  const [time, setTime] = useState(curTime);
+
+  setInterval(() => {
+    dateNow = new Date().toString();
+    [, , , , curTime] = dateNow.split(' ');
+    setTime(curTime);
+  }, 1000);
+
+  return (
+    <h5>{`Current Date: ${curMonth}/${curDay}-${curDayNum}/${curYear} ${time}`}</h5>
+  );
+};
 
 export default App;
