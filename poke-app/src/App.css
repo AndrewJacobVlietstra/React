@@ -139,7 +139,7 @@ body a {
 
 .gridStats p:hover {
   transform: translateY(-3px);
-  box-shadow: 0 .4rem .6rem #fff;
+  box-shadow: 0 .3rem .5rem #fff;
 }
 
 .pokeData {
