@@ -26,6 +26,9 @@ function App() {
         const response = await fetch(url);
         if (response.status === 404) {
           setIsError(true);
+          setTimeout(() => {
+            setIsError(false);
+          }, 8000);
           throw new Error(`Could not Find Pokemon ${response.status}`);
         }
         const data = await response.json();

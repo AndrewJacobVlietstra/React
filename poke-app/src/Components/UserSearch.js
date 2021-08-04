@@ -11,6 +11,7 @@ function UserSearch({ userSearch, setUserSearch, setCurrentURL, isError }) {
         id="pokeSearch"
         type="text"
         value={userSearch}
+        placeholder='Type here...'
         onChange={(e) => setUserSearch(e.target.value)}
         onKeyUp={(e) => {
           if (e.key === "Enter") {
