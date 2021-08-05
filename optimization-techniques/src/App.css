@@ -8,8 +8,9 @@ html {
   width: 30rem;
   padding: 1rem;
   background: white;
-  box-shadow: 0 .4rem .75rem #777;
+  box-shadow: 0 .4rem .75rem #111;
   border-radius: 10px;
+  text-align: center;
 }
 
 .app h1 {
