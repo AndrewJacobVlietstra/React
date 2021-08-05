@@ -1,0 +1,18 @@
+html {
+  background-color: #333;
+}
+
+
+.app {
+  margin: 3rem auto;
+  width: 30rem;
+  padding: 1rem;
+  background: white;
+  box-shadow: 0 .4rem .75rem #777;
+  border-radius: 10px;
+}
+
+.app h1 {
+  margin: 0;
+  text-align: center;
+}
