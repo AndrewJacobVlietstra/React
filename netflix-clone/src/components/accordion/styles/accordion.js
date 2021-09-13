@@ -8,6 +8,7 @@ export const Container = styled.div`
 export const Inner = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: center;
     max-width: 815px;
     margin: auto;
     padding: 70px 45px;
@@ -17,6 +18,7 @@ export const Item = styled.div`
     color: white;
     margin-bottom: 10px;
     max-width: 670px;
+    width: 100%;
 
     &:first-of-type {
         margin-top: 3rem;
