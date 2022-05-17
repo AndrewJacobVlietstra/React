@@ -1,0 +1,21 @@
+.product-page-container,
+.product-details-container,
+.sales-page-container {
+  color: #fff;
+  margin: 0 auto;
+  margin-top: 5rem;
+  text-align: center;
+  width: 1000px;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  margin: .5rem 0;
+}
+
+a {
+  color: #fff;
+}
